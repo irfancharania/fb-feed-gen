@@ -108,8 +108,7 @@ def build_site_url(username):
 def build_article(byline, extra):
     ''' fix up article content '''
 
-    content = '<p>' + byline + '</p><p>' + extra + '</p>'
-
+    content = byline + extra
     return strip_invalid_html(fix_article_links(content))
 
 
