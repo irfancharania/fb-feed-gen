@@ -1,0 +1,17 @@
+<!doctype html>
+<title>FB RSS Feed Generator</title>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/style.css')}}" />
+<link rel="shortcut icon" href="{{ url_for('static', filename='ico/favicon.ico') }}" />
+<div>
+  <p>Enter static username at end of url</p>
+
+  <form id="form-data" method="get" action="data" >
+     <p>
+     User Name: <input type="text" name="username" placeholder="islandfarmfresh" /><br/>
+     <em><small>E.g. https://www.facebook.com/<b>islandfarmfresh</b></small></em>
+     </p>
+     <p>
+     <input type="submit" value="Submit" /> 
+     </p>
+  </form>
+</div>

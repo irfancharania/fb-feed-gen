@@ -1,0 +1,6 @@
+{
+    "name": "Facebook Feed Generator",
+    "description": "Generate Atom feeds from public-facing Facebook pages",
+    "repository": "https://github.com/irfancharania/fb-feed-gen",
+    "keywords": ["facebook", "rss", "heroku"]
+}
