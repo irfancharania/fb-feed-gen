@@ -28,19 +28,6 @@ def get_remote_data(url, ismobile=True, referer=None):
     return r.content
 
 
-def is_site_available(url):
-    ''' ping site to see if it is up '''
-
-    print 'Checking url: {url}'.format(url=url)
-
-    try:
-        r = requests.head(url)
-        return r.status_code < 400
-
-    except:
-        return False
-
-
 def is_valid_username(username):
     ''' validate username '''
 
@@ -51,19 +38,19 @@ def is_valid_username(username):
 def strip_invalid_html(content):
     ''' strips invalid tags/attributes '''
 
-    tags = ['a', 'abbr', 'acronym', 'address', 'b', 'br', 'div', 'dl', 'dt',
+    allowed_tags = ['a', 'abbr', 'acronym', 'address', 'b', 'br', 'div', 'dl', 'dt',
             'em', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'i', 'img',
             'li', 'ol', 'p', 'pre', 'q', 's', 'small', 'strike', 'strong',
             'span', 'sub', 'sup', 'table', 'tbody', 'td', 'tfoot', 'th',
             'thead', 'tr', 'tt', 'u', 'ul']
-    attrs = {
+    allowed_attrs = {
         'a': ['href', 'target', 'title'],
         'img': ['src', 'alt', 'width', 'height'],
     }
 
     return bleach.clean(content,
-                        tags=tags,
-                        attributes=attrs,
+                        tags=allowed_tags,
+                        attributes=allowed_attrs,
                         strip=True)
 
 
@@ -128,7 +115,7 @@ def extract_items(contents):
                 continue  # ignore if no permalink found
 
             url = fix_guid_url(item_link[0]['href'])
-            date = parse(item.div.div.find('abbr').text.strip())
+            date = parse(item.div.div.find('abbr').text.strip(), fuzzy=True)
             article_text = item.div.div.next_sibling.text
             article_byline = item.div.div.next_sibling.contents[0].encode("utf8")
             author = item.div.div.span.text
