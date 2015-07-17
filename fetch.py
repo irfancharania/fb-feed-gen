@@ -39,10 +39,10 @@ def strip_invalid_html(content):
     ''' strips invalid tags/attributes '''
 
     allowed_tags = ['a', 'abbr', 'acronym', 'address', 'b', 'br', 'div', 'dl', 'dt',
-            'em', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'i', 'img',
-            'li', 'ol', 'p', 'pre', 'q', 's', 'small', 'strike', 'strong',
-            'span', 'sub', 'sup', 'table', 'tbody', 'td', 'tfoot', 'th',
-            'thead', 'tr', 'tt', 'u', 'ul']
+                    'em', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'i', 'img',
+                    'li', 'ol', 'p', 'pre', 'q', 's', 'small', 'strike', 'strong',
+                    'span', 'sub', 'sup', 'table', 'tbody', 'td', 'tfoot', 'th',
+                    'thead', 'tr', 'tt', 'u', 'ul']
     allowed_attrs = {
         'a': ['href', 'target', 'title'],
         'img': ['src', 'alt', 'width', 'height'],
@@ -78,9 +78,10 @@ def fix_article_links(content):
 
     return a_fix
 
+
 def fix_guid_url(url):
     ''' add base + strip extra parameters '''
-    
+
     expr = '([&\?]?(?:type|refid|source)=\d+&?.+$)'
     stripped = re.sub(expr, '', url)
 
@@ -97,6 +98,19 @@ def build_article(byline, extra):
 
     content = byline + extra
     return strip_invalid_html(fix_article_links(content))
+
+
+def get_article_extra(item):
+    ''' get extra photos/videos/etc but ignore like/share footer'''
+
+    numchildren = sum(1 for i in item.div.children)
+    if (numchildren > 3 and  # ignore like/share div
+            item.div.div.next_sibling.next_sibling.contents[0]):
+        article_extra = item.div.div.next_sibling.next_sibling.contents[0].encode("utf8")
+    else:
+        article_extra = ''
+
+    return article_extra
 
 
 def extract_items(contents):
@@ -121,9 +135,7 @@ def extract_items(contents):
             author = item.div.div.span.text
 
             # add photos/videos
-            article_extra = ''
-            if item.div.div.next_sibling.next_sibling.contents[0]:
-                article_extra = item.div.div.next_sibling.next_sibling.contents[0].encode("utf8")
+            article_extra = get_article_extra(item)
 
             # cleanup article
             article = build_article(article_byline, article_extra)
