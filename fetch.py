@@ -116,7 +116,7 @@ def extract_items(contents):
 
             url = fix_guid_url(item_link[0]['href'])
             date = parse(item.div.div.find('abbr').text.strip(), fuzzy=True)
-            article_text = item.div.div.next_sibling.text
+            article_text = item.div.div.next_sibling.text or item.div.div.span.text
             article_byline = item.div.div.next_sibling.contents[0].encode("utf8")
             author = item.div.div.span.text
 
