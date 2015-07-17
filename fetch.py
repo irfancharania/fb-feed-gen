@@ -57,8 +57,8 @@ def strip_invalid_html(content):
 def sub_video_link(m):
     expr = '\&amp\;source.+$'
     orig = m.group(1)
-    decoded = urllib.unquote(orig).decode('utf8')
-    new = re.sub(expr, '\" target', decoded)
+    unquoted = urllib.unquote(orig)
+    new = re.sub(expr, '\" target', unquoted)
     return new
 
 
@@ -66,7 +66,7 @@ def fix_video_redirect_link(content):
     ''' replace video redirects with direct link '''
 
     expr = '\/video_redirect\/\?src=(.+)\"\starget'
-    result = re.sub(expr, sub_video_link, content)
+    result = re.sub(expr, sub_video_link, content.decode("utf8"))
     return result
 
 
