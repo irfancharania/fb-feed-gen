@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, send_from_directory
 from werkzeug.contrib.atom import AtomFeed
 import fetch
 import logging
+import urllib
 
 
 # initialization
@@ -27,16 +28,19 @@ def main():
 def generate_feed():
     #app.logger.warning(request.args)
 
-    username = request.args.get('username')
-    if username:
-        if (fetch.is_valid_username(username)):
+    param = request.args.get('username')
+    if param:
+        username = urllib.unquote(param).strip()
+        match, display = fetch.is_valid_username(username)
+
+        if (match):
             # get posts
             data = fetch.get_remote_data(fetch.build_site_url(username))
             items = fetch.extract_items(data)
 
             if (items and len(items) > 0):
                 # create feed
-                feed = AtomFeed('{0} FB Posts'.format(username),
+                feed = AtomFeed('{0} FB Posts'.format(display),
                         feed_url=request.url, url=request.url_root)
 
                 for post in items:

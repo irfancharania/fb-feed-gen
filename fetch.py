@@ -31,8 +31,10 @@ def get_remote_data(url, ismobile=True, referer=None):
 def is_valid_username(username):
     ''' validate username '''
 
-    expr = '^[\w\.]{5,50}$'
-    return re.match(expr, username)
+    expr = '^(?:pages\/)?(?P<display>[\w\-\.]{5,50})(\/\d{5,50})?$'
+    result = re.match(expr, username)
+    display = result.group('display') if result else None
+    return (result, display)
 
 
 def strip_invalid_html(content):
@@ -66,15 +68,33 @@ def fix_video_redirect_link(content):
     ''' replace video redirects with direct link '''
 
     expr = '\/video_redirect\/\?src=(.+)\"\starget'
-    result = re.sub(expr, sub_video_link, content.decode("utf8"))
+    result = re.sub(expr, sub_video_link, content)
+    return result
+
+
+def sub_leaving_link(m):
+    expr = '\&amp\;h.+$'
+    orig = m.group(1)
+    unquoted = urllib.unquote(orig)
+    new = re.sub(expr, '\" target', unquoted)
+    return new
+
+
+def fix_leaving_link(content):
+    ''' replace leaving fb links with direct link '''
+
+    expr = 'http.+facebook\.com\/l.php\?u\=(.+)\"\starget'
+    result = re.sub(expr, sub_leaving_link, content)
     return result
 
 
 def fix_article_links(content):
     # fix video links
     v_fix = fix_video_redirect_link(content)
+    # fix leaving links
+    l_fix = fix_leaving_link(v_fix)
     # convert links to absolute
-    a_fix = v_fix.replace('href="/', 'href="{0}'.format(base_url))
+    a_fix = l_fix.replace('href="/', 'href="{0}'.format(base_url))
 
     return a_fix
 
@@ -96,8 +116,8 @@ def build_site_url(username):
 def build_article(byline, extra):
     ''' fix up article content '''
 
-    content = byline + extra
-    return strip_invalid_html(fix_article_links(content))
+    content = byline.encode("utf8") + extra.encode("utf8")
+    return strip_invalid_html(fix_article_links(content.decode("utf8")))
 
 
 def get_article_extra(item):
@@ -106,7 +126,7 @@ def get_article_extra(item):
     numchildren = sum(1 for i in item.div.children)
     if (numchildren > 3 and  # ignore like/share div
             item.div.div.next_sibling.next_sibling.contents[0]):
-        article_extra = item.div.div.next_sibling.next_sibling.contents[0].encode("utf8")
+        article_extra = item.div.div.next_sibling.next_sibling.contents[0]
     else:
         article_extra = ''
 
@@ -131,7 +151,7 @@ def extract_items(contents):
             url = fix_guid_url(item_link[0]['href'])
             date = parse(item.div.div.find('abbr').text.strip(), fuzzy=True)
             article_text = item.div.div.next_sibling.text or item.div.div.span.text
-            article_byline = item.div.div.next_sibling.contents[0].encode("utf8")
+            article_byline = item.div.div.next_sibling.contents[0]
             author = item.div.div.span.text
 
             # add photos/videos
