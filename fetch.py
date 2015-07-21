@@ -31,7 +31,7 @@ def get_remote_data(url, ismobile=True, referer=None):
 def is_valid_username(username):
     ''' validate username '''
 
-    expr = '^(?:pages\/)?(?P<display>[\w\-\.]{5,50})(\/\d{5,50})?$'
+    expr = '^(?:pages\/)?(?P<display>[\w\-\.]{3,50})(\/\d{3,50})?$'
     result = re.match(expr, username)
     display = result.group('display') if result else None
     return (result, display)
