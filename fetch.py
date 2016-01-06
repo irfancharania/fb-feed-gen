@@ -120,19 +120,6 @@ def build_article(byline, extra):
     return strip_invalid_html(fix_article_links(content.decode("utf8")))
 
 
-def get_article_extra(item):
-    ''' get extra photos/videos/etc but ignore like/share footer'''
-
-    numchildren = sum(1 for i in item.div.children)
-    if (numchildren > 3 and  # ignore like/share div
-            item.div.div.next_sibling.next_sibling.contents[0]):
-        article_extra = item.div.div.next_sibling.next_sibling.contents[0]
-    else:
-        article_extra = ''
-
-    return article_extra
-
-
 def extract_items(contents):
     ''' extract posts from page '''
 
@@ -144,18 +131,23 @@ def extract_items(contents):
 
     if soup.div:
         for item in soup.div.div.div.children:
-            item_link = item.select('a[aria-label*=Like]')
+            item_link = item.find('a', text='Full Story')
             if not item_link:
                 continue  # ignore if no permalink found
 
-            url = fix_guid_url(item_link[0]['href'])
-            date = parse(item.div.div.find('abbr').text.strip(), fuzzy=True)
-            article_text = item.div.div.next_sibling.text or item.div.div.span.text
-            article_byline = item.div.div.next_sibling.contents[0]
-            author = item.div.div.span.text
+            url = fix_guid_url(item_link['href'])
+            date = parse(item.find('abbr').text.strip(), fuzzy=True)
+            author = item.div.find('h3').a.get_text(strip=True)
+            article_byline = item.div.div.contents[0]
+
+            article_text = item.div.div.get_text(strip=True)
+            if not article_text:
+                article_text = item.div.find('h3').get_text()
 
             # add photos/videos
-            article_extra = get_article_extra(item)
+            article_extra = ''
+            if item.div.div.next_sibling:
+                article_extra = item.div.div.next_sibling.contents[0]
 
             # cleanup article
             article = build_article(article_byline, article_extra)
