@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os
 from flask import Flask, render_template, request, send_from_directory
 from werkzeug.contrib.atom import AtomFeed
@@ -46,7 +47,7 @@ def generate_feed():
                 for post in items:
                     feed.add(post['title'],
                              post['article'],
-                             content_type='html',
+                             content_type='xhtml',
                              author=post['author'],
                              url=post['url'],
                              updated=post['date'],
