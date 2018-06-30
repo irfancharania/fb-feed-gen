@@ -162,11 +162,11 @@ def extract_items(contents):
             # add photos/videos
             article_text = ''
             if item.div.div.next_sibling:
-                article_text = item.div.div.next_sibling.contents[0]
+                article_text = item.div.div.next_sibling
 
             article_extra = ''
             if item.div.div.next_sibling.next_sibling:
-                article_extra = item.div.div.next_sibling.next_sibling.contents[0]
+                article_extra = item.div.div.next_sibling.next_sibling
 
             # cleanup article
             article = build_article(article_text, article_extra)

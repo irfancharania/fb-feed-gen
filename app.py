@@ -47,7 +47,7 @@ def generate_feed():
                 for post in items:
                     feed.add(post['title'],
                              post['article'],
-                             content_type='xhtml',
+                             content_type='html',
                              author=post['author'],
                              url=post['url'],
                              updated=post['date'],
