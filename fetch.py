@@ -118,26 +118,25 @@ def build_site_url(username):
     return urlparse.urljoin(base_url, username)
 
 
-def build_article(byline, extra, extra2):
-    ''' fix up article content '''
-
-    content = (byline.get_text().encode("utf8") + ' '
-               + extra.encode("utf8") + ' '
-               + extra2.encode("utf8")
-               )
-    return strip_invalid_html(fix_article_links(content.decode("utf8")))
-
-
 def build_title(entry):
     ''' build title from entry '''
 
-    text = entry.get_text()
+    text = entry.get_text().strip()
 
     if len(text) > max_title_length:
         last_word = text.rfind(' ', 0, max_title_length)
         text = text[:last_word] + '...'
 
     return text
+
+
+def build_article(text, extra):
+    ''' fix up article content '''
+
+    content = (text.encode("utf8") + ' '
+               + extra.encode("utf8")
+               )
+    return strip_invalid_html(fix_article_links(content.decode("utf8")))
 
 
 def extract_items(contents):
@@ -158,25 +157,23 @@ def extract_items(contents):
             url = fix_guid_url(item_link['href'])
             date = parse(item.find('abbr').text.strip(), fuzzy=True)
             author = item.div.find('h3').a.get_text(strip=True)
-            article_byline = item.div.div.contents[0]
-
-            article_text = item.div.div.get_text()
-            if not article_text:
-                article_text = item.div.find('h3').get_text()
+            article_byline = item.div.div.get_text()
 
             # add photos/videos
-            article_extra = ''
+            article_text = ''
             if item.div.div.next_sibling:
-                article_extra = item.div.div.next_sibling.contents[0]
+                article_text = item.div.div.next_sibling.contents[0]
 
-            article_extra2 = ''
+            article_extra = ''
             if item.div.div.next_sibling.next_sibling:
-                article_extra2 = item.div.div.next_sibling.next_sibling.contents[0]
+                article_extra = item.div.div.next_sibling.next_sibling.contents[0]
 
             # cleanup article
-            article = build_article(article_byline, article_extra, article_extra2)
+            article = build_article(article_text, article_extra)
 
-            article_title = build_title(article_extra)
+            article_title = build_title(article_text)
+            if not article_title:
+                article_title = article_byline
 
             items.append({
                 'url': url,
