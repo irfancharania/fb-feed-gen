@@ -125,13 +125,19 @@ def build_site_url(username):
 def build_title(entry):
     ''' build title from entry '''
 
+    if not entry:
+        return 'Title not found'
+
     text = entry.get_text().strip()
+    if text:
 
-    if len(text) > max_title_length:
-        last_word = text.rfind(' ', 0, max_title_length)
-        text = text[:last_word] + '...'
+        if len(text) > max_title_length:
+            last_word = text.rfind(' ', 0, max_title_length)
+            text = text[:last_word] + '...'
+        return text
 
-    return text
+    else:
+        return entry
 
 
 def build_article(text, extra):
@@ -141,7 +147,7 @@ def build_article(text, extra):
     return strip_invalid_html(fix_article_links(content))
 
 
-def extract_items(contents):
+def extract_items(username, contents):
     ''' extract posts from page '''
 
     print('Extracting posts from page')
@@ -159,31 +165,37 @@ def extract_items(contents):
 
             url = fix_guid_url(item_link['href'])
             date = parse(item.find('abbr').text.strip(), fuzzy=True)
-            author = item.div.find('h3').a.get_text(strip=True)
-            article_byline = item.div.div.get_text()
 
-            # add photos/videos
+            article_byline = ''
             article_text = ''
-            if item.div.div.next_sibling:
-                article_text = item.div.div.next_sibling
-
             article_extra = ''
-            if item.div.div.next_sibling.next_sibling:
-                article_extra = item.div.div.next_sibling.next_sibling
+            article_author = username
+
+            if item.div.div:
+                article_byline = item.div.div.get_text()
+                article_author = item.div.div.find('h3').a.get_text(strip=True)
+
+                # add photos/videos
+                if item.div.div.next_sibling:
+                    article_text = item.div.div.next_sibling
+
+                if item.div.div.next_sibling.next_sibling:
+                    article_extra = item.div.div.next_sibling.next_sibling
 
             # cleanup article
             article = build_article(article_text, article_extra)
-            article_title = build_title(article_text)
 
-            if not article_title:
-                article_title = article_byline
+            article_title = article_byline
+            if not article_title or article_title == article_author:
+                article_title = build_title(article_text)
+
 
             items.append({
                 'url': url,
                 'title': article_title,
                 'article': article,
                 'date': date,
-                'author': author
+                'author': article_author
             })
 
         print('{0} posts found'.format(len(items)))
