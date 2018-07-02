@@ -1,11 +1,12 @@
-from __future__ import print_function
 from bs4 import BeautifulSoup
 from bs4 import SoupStrainer
 from dateutil.parser import *
 import requests
-import urlparse
+import urllib.parse
 import re
-import urllib
+import urllib.request
+import urllib.parse
+import urllib.error
 import bleach
 
 
@@ -19,9 +20,10 @@ max_title_length = 100
 
 def get_remote_data(url, ismobile=True, referer=None):
     ''' fetch website data as mobile or desktop browser'''
-    user_agent = user_agent_mobile if ismobile else user_agent_desktop
 
+    user_agent = user_agent_mobile if ismobile else user_agent_desktop
     headers = {'User-Agent': user_agent}
+
     if referer:
         headers['Referer'] = referer
 
@@ -34,7 +36,9 @@ def is_valid_username(username):
 
     expr = '^(?:pages\/)?(?P<display>[\w\-\.]{3,50})(\/\d{3,50})?$'
     result = re.match(expr, username)
+
     display = result.group('display') if result else None
+
     return (result, display)
 
 
@@ -46,15 +50,16 @@ def strip_invalid_html(content):
                     'li', 'ol', 'p', 'pre', 'q', 's', 'small', 'strike', 'strong',
                     'span', 'sub', 'sup', 'table', 'tbody', 'td', 'tfoot', 'th',
                     'thead', 'tr', 'tt', 'u', 'ul']
+
     allowed_attrs = {
         'a': ['href', 'target', 'title'],
         'img': ['src', 'alt', 'width', 'height'],
     }
 
     cleaned = bleach.clean(content,
-                        tags=allowed_tags,
-                        attributes=allowed_attrs,
-                        strip=True)
+                           tags=allowed_tags,
+                           attributes=allowed_attrs,
+                           strip=True)
 
     # handle malformed html after running through bleach
     tree = BeautifulSoup(cleaned, "lxml")
@@ -64,7 +69,7 @@ def strip_invalid_html(content):
 def sub_video_link(m):
     expr = '\&amp\;source.+$'
     orig = m.group(1)
-    unquoted = urllib.unquote(orig)
+    unquoted = urllib.parse.unquote(orig)
     new = re.sub(expr, '\" target', unquoted)
     return new
 
@@ -80,7 +85,7 @@ def fix_video_redirect_link(content):
 def sub_leaving_link(m):
     expr = '\&amp\;h.+$'
     orig = m.group(1)
-    unquoted = urllib.unquote(orig)
+    unquoted = urllib.parse.unquote(orig)
     new = re.sub(expr, '\" target', unquoted)
     return new
 
@@ -109,13 +114,12 @@ def fix_guid_url(url):
 
     expr = '([&\?]?(?:type|refid|source)=\d+&?.+$)'
     stripped = re.sub(expr, '', url)
-
-    guid = urlparse.urljoin(base_url, stripped)
+    guid = urllib.parse.urljoin(base_url, stripped)
     return guid
 
 
 def build_site_url(username):
-    return urlparse.urljoin(base_url, username)
+    return urllib.parse.urljoin(base_url, username)
 
 
 def build_title(entry):
@@ -133,10 +137,8 @@ def build_title(entry):
 def build_article(text, extra):
     ''' fix up article content '''
 
-    content = (text.encode("utf8") + ' '
-               + extra.encode("utf8")
-               )
-    return strip_invalid_html(fix_article_links(content.decode("utf8")))
+    content = str(text) + ' ' + str(extra)
+    return strip_invalid_html(fix_article_links(content))
 
 
 def extract_items(contents):
@@ -146,6 +148,7 @@ def extract_items(contents):
 
     main_content = SoupStrainer('div', {'id': 'recent'})
     soup = BeautifulSoup(contents, "lxml", parse_only=main_content)
+
     items = []
 
     if soup.div:
@@ -170,8 +173,8 @@ def extract_items(contents):
 
             # cleanup article
             article = build_article(article_text, article_extra)
-
             article_title = build_title(article_text)
+
             if not article_title:
                 article_title = article_byline
 
