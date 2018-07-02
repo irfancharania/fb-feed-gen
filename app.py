@@ -1,4 +1,4 @@
-﻿import os
+import os
 from flask import Flask, render_template, request, send_from_directory
 from werkzeug.contrib.atom import AtomFeed
 import fetch
@@ -54,13 +54,10 @@ def generate_feed():
                              published=post['date'])
 
                 return feed.get_response()
-
             else:
                 return 'No posts found. Are you sure you put in the correct username?'
-
         else:
             return 'Invalid username provided'
-
     else:
         return 'No username provided in query string'
 

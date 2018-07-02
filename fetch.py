@@ -93,7 +93,7 @@ def sub_leaving_link(m):
 def fix_leaving_link(content):
     ''' replace leaving fb links with direct link '''
 
-    expr = 'lm\.facebook\.com\/l.php\?u\=([a-zA-Z0-9\=\%\&\;\.\-\_]+)\"\s'
+    expr = 'https:\/\/lm\.facebook\.com\/l.php\?u\=([a-zA-Z0-9\=\%\&\;\.\-\_]+)\"\s'
     result = re.sub(expr, sub_leaving_link, content)
     return result
 
