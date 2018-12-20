@@ -11,8 +11,8 @@ import bleach
 
 
 # allows us to get mobile version
-user_agent_mobile = 'Mozilla/5.0 (Linux; Android 7.0; SM-G610F Build/NRD90M) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.111 Mobile Safari/537.36'
-user_agent_desktop = 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.87 Safari/537.36'
+user_agent_mobile = 'Mozilla/5.0 (Linux; Android 7.0; SM-G610M) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.80 Mobile Safari/537.36'
+user_agent_desktop = 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36'
 
 base_url = 'https://mbasic.facebook.com/'
 max_title_length = 100
@@ -125,19 +125,16 @@ def build_site_url(username):
 def build_title(entry):
     ''' build title from entry '''
 
-    if not entry:
-        return 'Title not found'
+    if entry:
+        text = entry.get_text().strip()
+        if text:
 
-    text = entry.get_text().strip()
-    if text:
+            if len(text) > max_title_length:
+                last_word = text.rfind(' ', 0, max_title_length)
+                text = text[:last_word] + '...'
+            return text
 
-        if len(text) > max_title_length:
-            last_word = text.rfind(' ', 0, max_title_length)
-            text = text[:last_word] + '...'
-        return text
-
-    else:
-        return entry
+    return 'Title not found'
 
 
 def build_article(text, extra):
@@ -188,6 +185,9 @@ def extract_items(username, contents):
             article_title = article_byline
             if not article_title or article_title == article_author:
                 article_title = build_title(article_text)
+            # get event title
+            elif 'an event' in article_title:
+                article_title = article_extra.find('h3').get_text(strip=True)
 
 
             items.append({
