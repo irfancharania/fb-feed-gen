@@ -8,6 +8,8 @@ import urllib.request
 import urllib.parse
 import urllib.error
 import bleach
+import json
+import datetime
 
 
 # allows us to get mobile version
@@ -144,6 +146,23 @@ def build_article(text, extra):
     return strip_invalid_html(fix_article_links(content))
 
 
+def parse_publish_time(json_string):
+    ''' parse json data to get publish timestamp '''
+    
+    data = json.loads(json_string)
+
+    page_insights = data['page_insights']
+    if page_insights:
+        
+        for key in page_insights.keys():
+            if ('post_context' in page_insights[key].keys()):
+
+                publish_time = page_insights[key]['post_context']['publish_time']
+                date = datetime.datetime.fromtimestamp(publish_time)
+
+                return date
+
+
 def extract_items(username, contents):
     ''' extract posts from page '''
 
@@ -161,7 +180,12 @@ def extract_items(username, contents):
                 continue  # ignore if no permalink found
 
             url = fix_guid_url(item_link['href'])
-            date = parse(item.find('abbr').text.strip(), fuzzy=True)
+            
+            # try to parse from json
+            date = parse_publish_time(item['data-ft'])
+            if date is None:
+                # fallback to parsing from html
+                date = parse(item.find('abbr').text.strip(), fuzzy=True)
 
             article_byline = ''
             article_text = ''

@@ -36,13 +36,16 @@ def generate_feed():
 
         if (match):
             # get posts
-            data = fetch.get_remote_data(fetch.build_site_url(username))
+            site_url = fetch.build_site_url(username)
+            data = fetch.get_remote_data(site_url)
             items = fetch.extract_items(username, data)
 
             if (items and len(items) > 0):
                 # create feed
                 feed = AtomFeed('{0} FB Posts'.format(display),
-                                feed_url=request.url, url=request.url_root)
+                                subtitle=site_url,
+                                feed_url=request.url,
+                                url=request.url_root)
 
                 for post in items:
                     feed.add(post['title'],
