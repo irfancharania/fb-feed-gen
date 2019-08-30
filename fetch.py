@@ -36,7 +36,7 @@ def get_remote_data(url, ismobile=True, referer=None):
 def is_valid_username(username):
     ''' validate username '''
 
-    expr = '^(?:pages\/)?(?P<display>[\w\-\.]{3,50})(\/\d{3,50})?$'
+    expr = r'^(?:pages\/)?(?P<display>[\w\-\.]{3,50})(\/\d{3,50})?$'
     result = re.match(expr, username)
 
     display = result.group('display') if result else None
@@ -65,11 +65,11 @@ def strip_invalid_html(content):
 
     # handle malformed html after running through bleach
     tree = BeautifulSoup(cleaned, "lxml")
-    return tree.html
+    return str(tree.html)
 
 
 def sub_video_link(m):
-    expr = '\&amp\;source.+$'
+    expr = r'\&amp\;source.+$'
     orig = m.group(1)
     unquoted = urllib.parse.unquote(orig)
     new = re.sub(expr, '\" target', unquoted)
@@ -79,13 +79,13 @@ def sub_video_link(m):
 def fix_video_redirect_link(content):
     ''' replace video redirects with direct link '''
 
-    expr = '\/video_redirect\/\?src=(.+)\"\starget'
+    expr = r'\/video_redirect\/\?src=(.+)\"\starget'
     result = re.sub(expr, sub_video_link, content)
     return result
 
 
 def sub_leaving_link(m):
-    expr = '\&amp\;h.+$'
+    expr = r'\&amp\;h.+$'
     orig = m.group(1)
     unquoted = urllib.parse.unquote(orig)
     new = re.sub(expr, '\" target', unquoted)
@@ -95,7 +95,7 @@ def sub_leaving_link(m):
 def fix_leaving_link(content):
     ''' replace leaving fb links with direct link '''
 
-    expr = 'https:\/\/lm\.facebook\.com\/l.php\?u\=([a-zA-Z0-9\=\%\&\;\.\-\_]+)\"\s'
+    expr = r'https:\/\/lm\.facebook\.com\/l.php\?u\=([a-zA-Z0-9\=\%\&\;\.\-\_]+)\"\s'
     result = re.sub(expr, sub_leaving_link, content)
     return result
 
@@ -114,7 +114,7 @@ def fix_article_links(content):
 def fix_guid_url(url):
     ''' add base + strip extra parameters '''
 
-    expr = '([&\?]?(?:type|refid|source)=\d+&?.+$)'
+    expr = r'([&\?]?(?:type|refid|source)=\d+&?.+$)'
     stripped = re.sub(expr, '', url)
     guid = urllib.parse.urljoin(base_url, stripped)
     return guid
