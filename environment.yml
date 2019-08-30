@@ -4,39 +4,55 @@ channels:
   - bioconda
   - conda-forge
 dependencies:
+  - atomicwrites=1.3.0=py37_1
+  - attrs=19.1.0=py37_1
   - ca-certificates=2019.5.15=0
   - certifi=2019.3.9=py37_0
+  - colorama=0.4.1=py37_0
+  - entrypoints=0.3=py37_0
+  - importlib_metadata=0.17=py37_1
   - libiconv=1.15=h1df5818_7
   - libxml2=2.9.8=hadb2253_1
   - libxslt=1.1.32=hf6f1972_0
+  - mccabe=0.6.1=py37_1
+  - more-itertools=7.0.0=py37_0
   - openssl=1.1.1b=hfa6e2cd_2
+  - packaging=19.0=py37_0
   - pip=19.1.1=py37_0
+  - pluggy=0.12.0=py_0
+  - py=1.8.0=py37_0
+  - pycodestyle=2.5.0=py37_0
+  - pyflakes=2.1.1=py37_0
+  - pyparsing=2.4.0=py_0
   - python=3.7.3=hb12ca83_0
   - setuptools=40.6.3=py37_0
   - sqlite=3.26.0=hfa6e2cd_1001
   - vc=14=h0510ff6_3
   - vs2015_runtime=14.0.25123=3
+  - wcwidth=0.1.7=py37_0
   - wheel=0.32.3=py37_0
   - wincertstore=0.2=py37_0
+  - zipp=0.5.1=py_0
   - zlib=1.2.11=h8395fce_2
   - pip:
-    - beautifulsoup4==4.7.1
+    - beautifulsoup4==4.8.0
     - bleach==3.1.0
     - chardet==3.0.4
     - click==6.7
-    - flask==1.0.3
-    - html5lib==1.0.1
+    - flake8==3.7.8
+    - flask==1.1.1
     - idna==2.7
     - itsdangerous==0.24
     - jinja2==2.10.1
-    - lxml==4.3.3
+    - lxml==4.4.1
     - markupsafe==1.0
+    - pytest==5.1.1
     - python-dateutil==2.8.0
     - requests==2.22.0
     - six==1.11.0
     - soupsieve==1.9.1
     - urllib3==1.25.3
     - webencodings==0.5.1
-    - werkzeug==0.14.1
+    - werkzeug==0.15.5
 prefix: C:\Users\Irfan\AppData\Local\conda\conda\envs\fbfeeds
 
