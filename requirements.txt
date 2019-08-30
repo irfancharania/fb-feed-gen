@@ -10,7 +10,7 @@ entrypoints==0.3
 flake8==3.7.8
 Flask==1.1.1
 html5lib==1.0.1
-idna==2.7
+idna==2.8
 importlib-metadata==0.17
 itsdangerous==0.24
 Jinja2==2.10.1
