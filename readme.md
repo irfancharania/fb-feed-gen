@@ -1,4 +1,5 @@
 # Facebook Feed Generator
+[![Build Status](https://travis-ci.com/irfancharania/fb-feed-gen.svg?branch=master)](https://travis-ci.com/irfancharania/fb-feed-gen.svg?branch=master)
 
 A number of organizations only provide regular updates through their Facebook pages and nowhere else. Up until recently, this wasn't a problem as Facebook provided RSS feeds for public-facing (non-login) pages. They dropped that feature at the end of June 2015.
 
