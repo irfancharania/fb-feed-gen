@@ -34,4 +34,4 @@ wcwidth==0.1.7
 webencodings==0.5.1
 Werkzeug==0.15.5
 wincertstore==0.2
-zipp==0.5.1
+zipp==0.6.0
