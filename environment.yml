@@ -1,58 +1,59 @@
 name: fbfeeds
 channels:
-  - defaults
-  - bioconda
   - conda-forge
+  - bioconda
+  - defaults
 dependencies:
-  - atomicwrites=1.3.0=py37_1
-  - attrs=19.1.0=py37_1
-  - ca-certificates=2019.5.15=0
-  - certifi=2019.3.9=py37_0
-  - colorama=0.4.1=py37_0
-  - entrypoints=0.3=py37_0
-  - importlib_metadata=0.17=py37_1
-  - libiconv=1.15=h1df5818_7
-  - libxml2=2.9.8=hadb2253_1
-  - libxslt=1.1.32=hf6f1972_0
-  - mccabe=0.6.1=py37_1
-  - more-itertools=7.0.0=py37_0
-  - openssl=1.1.1b=hfa6e2cd_2
-  - packaging=19.0=py37_0
-  - pip=19.1.1=py37_0
+  - atomicwrites=1.3.0=py_0
+  - attrs=19.3.0=py_0
+  - ca-certificates=2019.11.28=hecc5488_0
+  - certifi=2019.11.28=py37hc8dfbb8_0
+  - colorama=0.4.3=py_0
+  - entrypoints=0.3=py37_1000
+  - importlib_metadata=1.5.0=py37_0
+  - libiconv=1.15=hfa6e2cd_1005
+  - libxml2=2.9.10=h9ce36c8_0
+  - libxslt=1.1.33=heafd4d3_0
+  - mccabe=0.6.1=py_1
+  - more-itertools=8.2.0=py_0
+  - openssl=1.1.1d=hfa6e2cd_0
+  - packaging=20.1=py_0
+  - pip=20.0.2=py_2
   - pluggy=0.12.0=py_0
-  - py=1.8.0=py37_0
-  - pycodestyle=2.5.0=py37_0
-  - pyflakes=2.1.1=py37_0
-  - pyparsing=2.4.0=py_0
-  - python=3.7.3=hb12ca83_0
-  - setuptools=40.6.3=py37_0
-  - sqlite=3.26.0=hfa6e2cd_1001
-  - vc=14=h0510ff6_3
-  - vs2015_runtime=14.0.25123=3
-  - wcwidth=0.1.7=py37_0
-  - wheel=0.32.3=py37_0
-  - wincertstore=0.2=py37_0
-  - zipp=0.5.1=py_0
-  - zlib=1.2.11=h8395fce_2
+  - py=1.8.1=py_0
+  - pycodestyle=2.5.0=py_0
+  - pyflakes=2.1.1=py_0
+  - pyparsing=2.4.6=py_0
+  - python=3.7.6=h5b45d93_4_cpython
+  - python_abi=3.7=1_cp37m
+  - setuptools=46.0.0=py37hc8dfbb8_1
+  - sqlite=3.30.1=hfa6e2cd_0
+  - vc=14.1=h0510ff6_4
+  - vs2015_runtime=14.16.27012=hf0eaf9b_1
+  - wcwidth=0.1.8=py_0
+  - wheel=0.34.2=py_1
+  - wincertstore=0.2=py37_1003
+  - zipp=3.1.0=py_0
+  - zlib=1.2.11=h2fa13f4_1006
   - pip:
-    - beautifulsoup4==4.8.0
-    - bleach==3.1.0
+    - beautifulsoup4==4.8.2
+    - bleach==3.1.1
     - chardet==3.0.4
     - click==6.7
-    - flake8==3.7.8
+    - flake8==3.7.9
     - flask==1.1.1
     - idna==2.7
     - itsdangerous==0.24
     - jinja2==2.10.1
-    - lxml==4.4.1
+    - lxml==4.5.0
     - markupsafe==1.0
-    - pytest==5.1.1
-    - python-dateutil==2.8.0
-    - requests==2.22.0
+    - pytest==5.3.5
+    - python-dateutil==2.8.1
+    - requests==2.23.0
     - six==1.11.0
     - soupsieve==1.9.1
     - urllib3==1.25.3
     - webencodings==0.5.1
     - werkzeug==0.15.5
-prefix: C:\Users\Irfan\AppData\Local\conda\conda\envs\fbfeeds
+prefix: C:\Users\ic\Miniconda3\envs\fbfeeds
 
