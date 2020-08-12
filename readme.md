@@ -5,4 +5,4 @@ A number of organizations only provide regular updates through their Facebook pa
 
 This app generates Atom feeds so I can still get updates through my feed reader, without having to log into Facebook.
 
-[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
