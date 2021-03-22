@@ -14,7 +14,7 @@ importlib-metadata==1.5.0
 iniconfig==1.0.1
 itsdangerous==0.24
 Jinja2==2.11.2
-lxml==4.5.2
+lxml==4.6.3
 MarkupSafe==1.1.1
 mccabe==0.6.1
 more-itertools==8.2.0
