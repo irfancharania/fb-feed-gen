@@ -22,7 +22,6 @@ dependencies:
   - pyparsing=2.4.6=py_0
   - python=3.8.5=h5fd99cc_2_cpython
   - python_abi=3.8=1_cp38
-  - setuptools=49.3.1=py38h32f6830_0
   - sqlite=3.32.3=he774522_1
   - vc=14.1=h0510ff6_4
   - vs2015_runtime=14.16.27012=hf0eaf9b_1
@@ -38,7 +37,7 @@ dependencies:
     - charset-normalizer==2.0.8
     - click==6.7
     - flake8==4.0.1
-    - flask==2.0.2
+    - flask==1.1.2
     - idna==2.7
     - iniconfig==1.0.1
     - itsdangerous==0.24
@@ -52,6 +51,7 @@ dependencies:
     - pytest==6.2.5
     - python-dateutil==2.8.2
     - requests==2.26.0
+    - setuptools==59.4.0
     - six==1.15.0
     - soupsieve==1.9.1
     - toml==0.10.1
