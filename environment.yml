@@ -37,15 +37,15 @@ dependencies:
     - charset-normalizer==2.0.8
     - click==6.7
     - flake8==4.0.1
-    - flask==1.1.2
+    - flask==1.1.4
     - idna==2.7
     - iniconfig==1.0.1
     - itsdangerous==0.24
-    - jinja2==2.11.2
+    - jinja2==2.11.3
     - lxml==4.6.4
-    - markupsafe==1.1.1
+    - markupsafe==2.0.1
     - pluggy==0.13.1
-    - py==1.9.0
+    - py==1.11.0
     - pycodestyle==2.8.0
     - pyflakes==2.4.0
     - pytest==6.2.5
@@ -55,7 +55,7 @@ dependencies:
     - six==1.15.0
     - soupsieve==1.9.1
     - toml==0.10.1
-    - urllib3==1.25.10
+    - urllib3==1.26.7
     - webencodings==0.5.1
     - werkzeug==0.15.5
 prefix: C:\Users\ic\Miniconda3\envs\fbfeeds
