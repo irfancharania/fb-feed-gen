@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, send_from_directory
+from flask import Flask, render_template, request, send_from_directory, abort
 from werkzeug.contrib.atom import AtomFeed
 import fetch
 import logging
@@ -14,15 +14,24 @@ app.config.update(
     DEBUG=True,
 )
 
+
 # controllers
 @app.route('/favicon.ico')
 def favicon():
-    return send_from_directory(os.path.join(app.root_path, 'static'), 'ico/favicon.ico')
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'ico/favicon.ico')
 
 
 @app.route("/")
 def main():
     return render_template('index.html')
+
+
+@app.errorhandler(400)
+def page_not_found(e):
+    return render_template('400.html',
+                           message=e.description,
+                           data=e.response), 400
 
 
 @app.route("/data")
@@ -58,7 +67,8 @@ def generate_feed():
 
                 return feed.get_response()
             else:
-                return 'No posts found. Are you sure you put in the correct username?'
+                msg = 'No posts found. Are you sure you put in the correct username?'
+                abort(400, description=msg, response=data)
         else:
             return 'Invalid username provided'
     else:
