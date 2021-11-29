@@ -52,7 +52,7 @@ jobs:
     needs: build
     environment:
       name: 'Production'
-      url: ::add-mask::${{ secrets.SECRET_URL }}
+      url: fbfeeds
 
     steps:
       - name: Download artifact from build job
