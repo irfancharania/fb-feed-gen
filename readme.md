@@ -6,3 +6,14 @@ A number of organizations only provide regular updates through their Facebook pa
 This app generates Atom feeds so I can still get updates through my feed reader, without having to log into Facebook.
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+
+## Run it Locally
+
+```
+virtualenv env -p `command -v python3`
+env/bin/pip install -r requirements.txt
+python setup.py install
+fb-feedd-gen
+```
+Then go to http://127.0.0.1:5000
+

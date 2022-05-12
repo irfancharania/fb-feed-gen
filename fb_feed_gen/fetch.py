@@ -163,10 +163,10 @@ def parse_publish_time(json_string):
                 return date
 
 
-def extract_items(username, contents):
+def extract_items(username, contents, logger):
     ''' extract posts from page '''
 
-    print('Extracting posts from page')
+    #print('Extracting posts from page')
 
     main_content = SoupStrainer('div', {'id': 'recent'})
     soup = BeautifulSoup(contents, "lxml", parse_only=main_content)
@@ -222,7 +222,7 @@ def extract_items(username, contents):
                 'author': article_author
             })
 
-        print('{0} posts found'.format(len(items)))
+        logger.debug('%s posts found', len(items))
 
         return items
     # else

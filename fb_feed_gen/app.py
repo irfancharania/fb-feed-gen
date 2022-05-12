@@ -1,7 +1,7 @@
 import os
 from flask import Flask, render_template, request, send_from_directory, abort
 from werkzeug.contrib.atom import AtomFeed
-import fetch
+from fb_feed_gen import fetch
 import logging
 import urllib.request
 import urllib.parse
@@ -10,20 +10,26 @@ import urllib.error
 
 # initialization
 app = Flask(__name__)
+path = os.path.dirname(os.path.abspath(__file__))
+app.template_folder=os.path.join(path, '..', 'templates')
 app.config.update(
     DEBUG=True,
 )
 
 
 # controllers
-@app.route('/favicon.ico')
+@app.route('/static/ico/favicon.ico')
 def favicon():
-    return send_from_directory(os.path.join(app.root_path, 'static'),
-                               'ico/favicon.ico')
+    return send_from_directory(os.path.join(path, '..', 'static'),
+                              'ico/favicon.ico')
 
+@app.route('/static/css/style.css')
+def css():
+    return send_from_directory(os.path.join(path, '..', 'static'), 'css/style.css')
 
 @app.route("/")
 def main():
+    #print(os.path.join(app.root_path, 'templates'))
     return render_template('index.html')
 
 
@@ -75,7 +81,10 @@ def generate_feed():
         return 'No username provided in query string'
 
 
-# launch
-if __name__ == "__main__":
+def main():
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
+
+# launch
+if __name__ == "__main__":
+    main()

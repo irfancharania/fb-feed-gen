@@ -1,4 +1,4 @@
-import fetch
+from fb_feed_gen import fetch
 import datetime
 
 ''' Run 'pytest' or 'pytest -vv' to run all '''
