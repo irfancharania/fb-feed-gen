@@ -34,7 +34,7 @@ six==1.16.0
 soupsieve==1.9.1
 toml==0.10.1
 urllib3==1.26.7
-wcwidth==0.1.8
+wcwidth==0.2.6
 webencodings==0.5.1
 Werkzeug==0.15.5
 wheel==0.34.2
